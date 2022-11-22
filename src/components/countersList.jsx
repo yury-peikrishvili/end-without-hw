@@ -15,15 +15,37 @@ const CountersList = () => {
         const newCounters = counters.filter((c) => c.id !== id);
         setCounters(newCounters);
     };
+
     const handleReset = () => {
         setCounters(initialState);
-        console.log("handle reset");
+    };
+
+    const handleIncrement = (id) => {
+        const newCounters = counters.map((obj) => {
+            if (obj.id === id){
+                obj.value += 1;
+            }
+            return obj        
+        })
+
+        setCounters(newCounters);
+    };
+   
+    //или лучше так?
+    const handleDecrement = (id) => {
+        let objIndex = counters.findIndex((obj => obj.id === id));
+        if (counters[id].value>0){
+            counters[id].value -= 1;
+        }
+       
+        const newCounters = Object.create(counters)
+        setCounters(newCounters);
     };
 
     return (
         <>
             {counters.map((count) => (
-                <Counter key={count.id} onDelete={handleDelete} {...count} />
+                <Counter key={count.id} onDelete={handleDelete} onIncrement={handleIncrement} onDecrement={handleDecrement} {...count} />
             ))}
             <button
                 className='btn btn-primary btn-sm m-2'
